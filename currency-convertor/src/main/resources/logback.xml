@@ -23,5 +23,9 @@
 
     <!-- list of logger prefixes with non-default logging levels -->
     <logger name="org" level="info"/>
+<<<<<<< HEAD
     <logger name="cz" level="trace"/>
 </configuration>
+=======
+</configuration>
+>>>>>>> 944c4d0f1427d201a90eba68c2ca5cab90752e1e
