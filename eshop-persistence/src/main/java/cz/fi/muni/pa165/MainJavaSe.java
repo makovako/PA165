@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,6 +14,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import cz.fi.muni.pa165.entity.Color;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import cz.fi.muni.pa165.entity.Category;
@@ -27,7 +30,7 @@ public class MainJavaSe {
 		emf = Persistence.createEntityManagerFactory("default");
 		try {
 			// BEGIN YOUR CODE
-			task04();
+			task06();
 			// END YOUR CODE
 		} finally {
 			emf.close();
@@ -37,11 +40,20 @@ public class MainJavaSe {
 
 	private static void task04() {
 		// TODO under this line, persist two categories (class Category), one with name
+		EntityManager myem = emf.createEntityManager();
 		// Electronics and second with name Musical
 		// You must first obtain the Entity manager
+		myem.getTransaction().begin();
+		Category electronics = new Category();
+		electronics.setName("Electronics");
+		Category musical = new Category();
+		musical.setName("Musical");
 		// Then you have to start transaction using getTransaction().begin()
 		// Then use persist() to persist both of the categories and finally commit the transaction
-
+		myem.persist(electronics);
+		myem.persist(musical);
+		myem.getTransaction().commit();
+		myem.close();
 		// The code below is just testing code. Do not modify it
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -73,6 +85,13 @@ public class MainJavaSe {
 		// TODO under this line. create new entity manager and start new transaction. Merge
 		// the detached category
 		// into the context and change the name to "Electro"
+		EntityManager myem = emf.createEntityManager();
+		myem.getTransaction().begin();
+		Category cate = myem.merge(category);
+//		Category cate = myem.find(Category.class,category).;
+		cate.setName("Electro");
+		myem.getTransaction().commit();
+		myem.close();
 
 		// The code below is just testing code. Do not modify it
 		EntityManager checkingEm = emf.createEntityManager();
@@ -100,7 +119,18 @@ public class MainJavaSe {
 		// Additional task: Change the underlying table of Product entity to be ESHOP_PRODUCTS. After you do this, check this by inspecting console output (the CREATE TABLE statement)
 		//
 
-/** TODO uncoment all the code below after you finish the TODO's
+		EntityManager myem  = emf.createEntityManager();
+		myem.getTransaction().begin();
+		Product product = new Product();
+		product.setName("Guitar");
+		product.setColor(Color.BLACK);
+		LocalDate dat = LocalDate.of(2011,1,20);
+
+		product.setAddedDate(dat);
+		myem.persist(product);
+		myem.getTransaction().commit();
+		myem.close();
+
 
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -135,7 +165,7 @@ public class MainJavaSe {
 		em.close();
 
 		System.out.println("Task6 ok!");
-**/
+
 	}
 	
 	private static void task07() {
